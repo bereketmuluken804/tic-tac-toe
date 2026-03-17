@@ -16,10 +16,7 @@ class GameBoard {
     attachevent(){
         for(let box of this.board){
             box.addEventListener('click', ()=>{
-                if(box.getAttribute("clicked") != "true"){
-                    box.textContent = "Clicked";
-                    box.setAttribute("clicked" , "true");
-            }
+                    mark(box)
             })
         }
     }
@@ -33,3 +30,11 @@ class GameBoard {
 }
 
 const g1 = new GameBoard();
+let currentplayer = "x";
+
+function mark(box){
+    if(box.textContent === ""){
+    box.textContent = currentplayer;
+    currentplayer = (currentplayer === "x")? "o":"x";
+}
+}
