@@ -14,7 +14,7 @@ const gm = (()=>{
     attachEvent = ()=>{
         for(let box of this.board){
             box.addEventListener('click', ()=>{
-                    mark(box)  
+                    mark(box); 
             })
         }
     }
@@ -27,14 +27,14 @@ const gm = (()=>{
 
     this.attachEvent();
     this.displayGameBoard()
-
+    return {board}
 })();
 
-let currentplayer = "x";
+let currentplayer = "✖️";
 // to store player's marked positions
 const player = {
-    "x" : "",
-    "o" : ""
+    "✖️" : "",
+    "⭕" : ""
 }
 
 function mark(box){
@@ -44,18 +44,31 @@ function mark(box){
         if(player[currentplayer].length > 2){
             checkWin(currentplayer);
         }
-        
-        currentplayer = (currentplayer === "x")? "o":"x";
+        currentplayer = (currentplayer === "✖️")? "⭕":"✖️";
     }
 }
 const winposes = ["123", "456", "789", "147", "258", "369", "159", "357"]
 function checkWin(p){
     let player_pos = player[currentplayer]
+    let playerWiningPos = '';
 
     let player_won = winposes.some(winpos=>{
         split_winpos = winpos.split('')
-        return split_winpos.every(pos => player_pos.includes(pos));
+        if(split_winpos.every(pos => player_pos.includes(pos))){
+            playerWiningPos = winpos;
+        };
+        return split_winpos.every(pos => player_pos.includes(pos))
     })
-    if(player_won)
-        alert(`${currentplayer} Won`);
+    if(player_won){
+        displayWinner(playerWiningPos);
+    }
+}
+
+function displayWinner(playerWiningPos){
+    for(let box of gm.board){
+        if(playerWiningPos.includes(box.id)){
+            box.classList.add("win");
+        }
+    }
+    gm.displayGameBoard();
 }
