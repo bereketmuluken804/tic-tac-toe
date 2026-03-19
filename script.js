@@ -38,7 +38,7 @@ const player = {
 }
 
 function mark(box){
-    if(box.textContent === ""){
+    if(box.textContent === "" && box.getAttribute("disabled") !== "true"){
         box.textContent = currentplayer;
         player[currentplayer] += box.id;
         if(player[currentplayer].length > 2){
@@ -69,6 +69,7 @@ function displayWinner(playerWiningPos){
         if(playerWiningPos.includes(box.id)){
             box.classList.add("win");
         }
+        box.setAttribute("disabled", "true")
     }
     gm.displayGameBoard();
 }
