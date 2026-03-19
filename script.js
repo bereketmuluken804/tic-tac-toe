@@ -1,18 +1,18 @@
 
 const gameboard = document.querySelector("#gameboard")
-
+const result = document.querySelector("h2")
 const gm = (()=>{
 
-    this.board = [];
+    const board = [];
 
     for(let i=1; i<10; i++){
         const box = document.createElement("div");
         box.id = i;
-        this.board.push(box)
+        board.push(box)
     }
 
     attachEvent = ()=>{
-        for(let box of this.board){
+        for(let box of board){
             box.addEventListener('click', ()=>{
                     mark(box); 
             })
@@ -20,19 +20,19 @@ const gm = (()=>{
     }
 
     displayGameBoard = ()=>{
-        for(let box of this.board){
+        for(let box of board){
             gameboard.appendChild(box);
         }
     }
 
-    this.attachEvent();
-    this.displayGameBoard()
+    attachEvent();
+    displayGameBoard()
     return {board}
 })();
 
 let currentplayer = "✖️";
 // to store player's marked positions
-const player = {
+let player = {
     "✖️" : "",
     "⭕" : ""
 }
@@ -42,18 +42,18 @@ function mark(box){
         box.textContent = currentplayer;
         player[currentplayer] += box.id;
         if(player[currentplayer].length > 2){
-            checkWin(currentplayer);
+            checkWin();
         }
         currentplayer = (currentplayer === "✖️")? "⭕":"✖️";
     }
 }
 const winposes = ["123", "456", "789", "147", "258", "369", "159", "357"]
-function checkWin(p){
+function checkWin(){
     let player_pos = player[currentplayer]
     let playerWiningPos = '';
 
     let player_won = winposes.some(winpos=>{
-        split_winpos = winpos.split('')
+        let split_winpos = winpos.split('')
         if(split_winpos.every(pos => player_pos.includes(pos))){
             playerWiningPos = winpos;
         };
@@ -61,8 +61,10 @@ function checkWin(p){
     })
     if(player_won){
         displayWinner(playerWiningPos);
+        result.textContent = `${currentplayer} Wins`
     }
     if(player["✖️"].length === 5 && !player_won){
+        result.textContent= `Draw!`
         displayDraw();
     }
 }
@@ -81,3 +83,20 @@ function displayDraw(){
         box.classList.add("draw");
     }
 }
+const btn = document.querySelector("button");
+
+btn.addEventListener('click', ()=>{
+    result.textContent = "Result";
+    for(let box of gm.board){
+        box.classList.remove("draw");
+        box.classList.remove("win");
+        box.setAttribute("disabled", "false");
+        box.textContent = "";
+        currentplayer = "✖️";
+        player = {
+            "✖️" : "",
+            "⭕" : ""
+        }
+
+    }
+})
