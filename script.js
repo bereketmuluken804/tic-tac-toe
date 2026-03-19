@@ -62,6 +62,9 @@ function checkWin(p){
     if(player_won){
         displayWinner(playerWiningPos);
     }
+    if(player["✖️"].length === 5 && !player_won){
+        displayDraw();
+    }
 }
 
 function displayWinner(playerWiningPos){
@@ -71,5 +74,10 @@ function displayWinner(playerWiningPos){
         }
         box.setAttribute("disabled", "true")
     }
-    gm.displayGameBoard();
+}
+
+function displayDraw(){
+    for(let box of gm.board){
+        box.classList.add("draw");
+    }
 }
