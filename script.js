@@ -1,40 +1,61 @@
 
 const gameboard = document.querySelector("#gameboard")
 
-class GameBoard {
-    constructor(){
-        this.board = [];
+const gm = (()=>{
 
-        for(let i=1; i<10; i++){
-            const box = document.createElement("div");
-            box.id = i;
-            this.board.push(box)
-        }
-        this.attachevent();
-        this.displayGameBoard()
+    this.board = [];
+
+    for(let i=1; i<10; i++){
+        const box = document.createElement("div");
+        box.id = i;
+        this.board.push(box)
     }
-    attachevent(){
+
+    attachEvent = ()=>{
         for(let box of this.board){
             box.addEventListener('click', ()=>{
-                    mark(box)
+                    mark(box)  
             })
         }
     }
 
-    displayGameBoard(){
+    displayGameBoard = ()=>{
         for(let box of this.board){
             gameboard.appendChild(box);
         }
     }
 
-}
+    this.attachEvent();
+    this.displayGameBoard()
 
-const g1 = new GameBoard();
+})();
+
 let currentplayer = "x";
+// to store player's marked positions
+const player = {
+    "x" : "",
+    "o" : ""
+}
 
 function mark(box){
     if(box.textContent === ""){
-    box.textContent = currentplayer;
-    currentplayer = (currentplayer === "x")? "o":"x";
+        box.textContent = currentplayer;
+        player[currentplayer] += box.id;
+        if(player[currentplayer].length > 2){
+            checkWin(currentplayer);
+        }
+        
+        currentplayer = (currentplayer === "x")? "o":"x";
+    }
 }
+const winposes = ["123", "456", "789", "147", "258", "369", "159", "357"]
+function checkWin(p){
+    let player_pos = player[currentplayer]
+
+    let player_won = winposes.some(winpos=>{
+        split_winpos = winpos.split('')
+        return split_winpos.every(pos => player_pos.includes(pos));
+    })
+    if(player_won)
+        alert(`${currentplayer} Won`);
 }
