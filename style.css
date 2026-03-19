@@ -67,8 +67,8 @@ h1, h2, h3, h4, h5, h6 {
 
 #gameboard {
     background-color: white;
-    height: 70%;
-    width: 60%;
+    height: 60%;
+    width: 80%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
